@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  Platform,
-  StatusBar,
-} from "react-native";
+import { View, StyleSheet, Image, Platform, StatusBar } from "react-native";
 
 import AppText from "../components/AppText";
 import colors from "../config/colors";
@@ -23,13 +17,12 @@ function Card({ image, title, subTitle }) {
 }
 const styles = StyleSheet.create({
   container: {
-    top: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    height: 270,
+    height: 230,
     width: "100%",
     backgroundColor: "#fff",
-    borderRadius: 40,
-    margin: 15,
+    borderRadius: 20,
     overflow: "hidden",
+    marginVertical: 10,
   },
   image: {
     width: "100%",
