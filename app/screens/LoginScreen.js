@@ -1,12 +1,9 @@
 import React from "react";
 import { StyleSheet, Image } from "react-native";
-import { Formik } from "formik";
 import * as Yup from "yup";
 
-import AppButton from "../components/AppButton";
-import AppTextInput from "../components/AppTextInput";
-import ErrorMessages from "../components/ErrorMessages";
 import Screen from "../components/Screen";
+import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -17,37 +14,31 @@ function LoginScreen(props) {
   return (
     <Screen style={styles.container}>
       <Image style={styles.logo} source={require("../assets/logo-red.png")} />
-      <Formik
+      <AppForm
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => console.log(values)}
         validationSchema={validationSchema}
       >
-        {({ errors, handleChange, handleSubmit, setFieldTouched, touched }) => (
-          <>
-            <AppTextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="email"
-              keyboardType="email-address"
-              onBlur={() => setFieldTouched("email")}
-              onChangeText={handleChange("email")}
-              placeholder="Email"
-            />
-            <ErrorMessages error={errors.email} visible={touched.email} />
-            <AppTextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              onBlur={() => setFieldTouched("password")}
-              onChangeText={handleChange("password")}
-              placeholder="Password"
-              secureTextEntry
-            />
-            <ErrorMessages error={errors.password} visible={touched.password} />
-            <AppButton title="Login" onPress={handleSubmit} />
-          </>
-        )}
-      </Formik>
+        <AppFormField
+          name="email"
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="email"
+          keyboardType="email-address"
+          placeholder="Email"
+        />
+
+        <AppFormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="lock"
+          name="password"
+          placeholder="Password"
+          secureTextEntry
+        />
+
+        <SubmitButton title="Login" />
+      </AppForm>
     </Screen>
   );
 }
