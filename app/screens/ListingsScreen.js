@@ -1,28 +1,41 @@
-import React from "react";
-import { FlatList, View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { FlatList, View, StyleSheet, ActivityIndicator } from "react-native";
 
 import Screen from "../components/Screen";
 import Card from "../components/Card";
 import colors from "../config/colors";
+import listingsApi from "../api/listingsApi";
+import routes from "../navigations/routes";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
 
-const listings = [
-  {
-    id: 1,
-    title: "Red Jacket for sale",
-    price: 100,
-    image: require("../assets/jacket.jpg"),
-  },
-  {
-    id: 2,
-    title: "Couch in great condition",
-    price: 1000,
-    image: require("../assets/couch.jpg"),
-  },
-];
+function ListingsScreen({ navigation }) {
+  const [listings, setListings] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    loadListings();
+  }, []);
 
-function ListingsScreen(props) {
+  const loadListings = async () => {
+    setLoading(true);
+    const response = await listingsApi.getListings();
+    setLoading(false);
+
+    if (!response.ok) return setError(true);
+
+    setError(false);
+    setListings(response.data);
+  };
   return (
     <Screen style={styles.container}>
+      {error && (
+        <>
+          <AppText>Could'nt Fetch Listings, Try Again</AppText>
+          <AppButton title="Refresh" onPress={loadListings} />
+        </>
+      )}
+      <ActivityIndicator animating={true} size={"large"} />
       <FlatList
         data={listings}
         keyExtractor={(listing) => listing.id.toString()}
@@ -30,7 +43,8 @@ function ListingsScreen(props) {
           <Card
             title={item.title}
             subTitle={"$" + item.price}
-            image={item.image}
+            imageUrl={item.images[0].url}
+            onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
           />
         )}
       />

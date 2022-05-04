@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import * as Yup from "yup";
+
+import CategoryPickerItem from "../components/CategoryPickerItem";
 
 import {
   AppForm,
@@ -8,23 +10,27 @@ import {
   AppFormPicker,
   SubmitButton,
 } from "../components/forms";
+import FormImagePicker from "../components/forms/FormImagePicker";
 
 import Screen from "../components/Screen";
+import useLocation from "../hooks/useLocation";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
   price: Yup.number().required().min(1).max(10000).label("Price"),
   description: Yup.string().label("Description"),
-  category: Yup.object().required().nullable().label("Category"),
+  category: Yup.object().nullable().label("Category"),
+  images: Yup.array().min(1, "Please select at least one image."),
 });
 
 const categories = [
-  { label: "Furnitures", value: 1 },
-  { label: "Camera", value: 2 },
-  { label: "Clothing", value: 3 },
+  { label: "Furnitures", value: 1, backgroundColor: "red", icon: "apps" },
+  { label: "Camera", value: 2, backgroundColor: "green", icon: "email" },
+  { label: "Clothing", value: 3, backgroundColor: "blue", icon: "lock" },
 ];
 
 function ListingEditScreen(props) {
+  const location = useLocation();
   return (
     <Screen style={styles.container}>
       <AppForm
@@ -33,18 +39,28 @@ function ListingEditScreen(props) {
           price: "",
           description: "",
           category: null,
+          images: [],
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => console.log(location)}
       >
+        <FormImagePicker name="images" />
         <AppFormField name="Title" maxLength={255} placeholder="Title" />
         <AppFormField
           name="price"
           keyboardType="numeric"
           maxLength={8}
           placeholder="Price"
+          width={120}
         />
-         <AppFormPicker items={categories} name="category" placeholder="Category"/> 
+        <AppFormPicker
+          items={categories}
+          name="category"
+          numberOfColumns={3}
+          PickerItemComponent={CategoryPickerItem}
+          placeholder="Category"
+          width="50%"
+        />
         <AppFormField
           name="description"
           maxLength={255}

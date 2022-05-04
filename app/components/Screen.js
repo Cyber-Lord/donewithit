@@ -10,14 +10,18 @@ import {
 function Screen({ children, style }) {
   return (
     <SafeAreaView style={[styles.screen, style]}>
-      <View style={style}>{children}</View>
+      <View style={[styles.view, style]}>{children}</View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: 30,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  view: {
+    flex: 1,
   },
 });
 export default Screen;
