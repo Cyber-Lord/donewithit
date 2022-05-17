@@ -12,7 +12,7 @@ function FormImagePicker({ name }) {
     setFieldValue(name, [...imageUris, uri]);
   };
 
-  const handleDelete = (uri) => {
+  const handleRemove = (uri) => {
     setFieldValue(
       name,
       imageUris.filter((imageUri) => imageUri !== uri)
@@ -24,7 +24,7 @@ function FormImagePicker({ name }) {
       <ImageInputList
         imageUris={imageUris}
         onAddImage={handleAdd}
-        onRemoveImage={handleDelete}
+        onRemoveImage={handleRemove}
       />
       <ErrorMessages error={errors[name]} visible={touched[name]} />
     </>

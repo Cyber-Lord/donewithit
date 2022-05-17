@@ -1,11 +1,13 @@
 import * as React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet, AsyncStorage } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Screen from "./app/components/Screen";
 import AppNavigator from "./app/navigations/AppNavigator";
 import navigationTheme from "./app/navigations/navigationTheme";
+import NetInfo, { useNetInfo } from "@react-native-community/netinfo";
+import OfflineNotice from "./app/components/OfflineNotice";
 
 const TweetDetails = () => (
   <Screen>
@@ -54,11 +56,15 @@ const TabNavigator = () => (
     <Tab.Screen name="Accounts" component={Account} />
   </Tab.Navigator>
 );
+
 function App() {
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <AppNavigator />
-    </NavigationContainer>
+    <>
+      <OfflineNotice />
+      <NavigationContainer theme={navigationTheme}>
+        <AppNavigator />
+      </NavigationContainer>
+    </>
   );
 }
 
