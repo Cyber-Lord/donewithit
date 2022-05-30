@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, KeyboardAvoidingView } from "react-native";
 import { Image } from "react-native-expo-image-cache";
 
 import AppText from "../components/AppText";
@@ -9,26 +9,32 @@ function ListingDetailsScreen({ route }) {
   const listing = route.params;
 
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        preview={{ uri: listing.images[0].thumbnailUrl }}
-        tint="light"
-        uri={listing.images[0].url}
-      />
-      <AppText style={styles.title}>{listing.title}</AppText>
-      <AppText style={styles.subTitle}>${listing.price}</AppText>
-      <View style={styles.userContainer}>
+    <KeyboardAvoidingView
+      behavior="position"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
+    >
+      <View style={styles.container}>
         <Image
-          style={styles.userImage}
-          source={require("../assets/mosh.jpg")}
+          style={styles.image}
+          preview={{ uri: listing.images[0].thumbnailUrl }}
+          tint="light"
+          uri={listing.images[0].url}
         />
-        <View style={styles.userProfile}>
-          <AppText style={styles.name}>Mosh Hamedani</AppText>
-          <AppText style={styles.listings}>5 Listings</AppText>
+        <AppText style={styles.title}>{listing.title}</AppText>
+        <AppText style={styles.subTitle}>${listing.price}</AppText>
+        <View style={styles.userContainer}>
+          <Image
+            style={styles.userImage}
+            source={require("../assets/mosh.jpg")}
+          />
+          <View style={styles.userProfile}>
+            <AppText style={styles.name}>Mosh Hamedani</AppText>
+            <AppText style={styles.listings}>5 Listings</AppText>
+          </View>
         </View>
+        <ContactSellerForm listing={listing} />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create({

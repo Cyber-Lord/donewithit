@@ -6,6 +6,7 @@ import ListItem from "../components/ListItem";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
+import useAuth from "../auth/useAuth";
 
 const menuItems = [
   {
@@ -25,12 +26,14 @@ const menuItems = [
   },
 ];
 function AccountScreen({ navigation }) {
+  const { user, logOut } = useAuth();
+
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title="Umar Farooq"
-          subTitle="admin@this.com"
+          title={user.name}
+          subTitle={user.email}
           image={require("../assets/mosh.jpg")}
         />
       </View>
@@ -56,6 +59,7 @@ function AccountScreen({ navigation }) {
       <ListItem
         title="Logout"
         ImageComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
+        onPress={() => logOut()}
       />
     </Screen>
   );
